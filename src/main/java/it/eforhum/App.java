@@ -1,10 +1,9 @@
 package it.eforhum;
 
-/**
- * Hello world!
- */
+import it.eforhum.utils.DBConnection;
+
 public class App {
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        DBConnection.connectToDB();
     }
 }
