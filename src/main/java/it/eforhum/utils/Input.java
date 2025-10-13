@@ -1,5 +1,7 @@
 package it.eforhum.utils;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class Input {
@@ -55,4 +57,25 @@ public class Input {
             return doubleInput(message);
         }
     }
+
+    public static LocalDate dateInput(String message) {
+        LocalDate date;
+        try {
+            date = LocalDate.parse(stringInput(message + " (formato YYYY-MM-DD): ") , DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        } catch (Exception e) {
+            return dateInput(message);
+        }
+        return date;
+    }
+
+    public static Integer yearInput(String message) {
+        Integer year = integerInput(message + " (formato YYYY): ");
+        if (year < 0 || year > 9999) {
+            System.out.println("Input invalido");
+            return yearInput(message);
+        }
+
+        return year;
+    }
+
 }
