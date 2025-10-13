@@ -2,12 +2,16 @@ package it.eforhum;
 
 import java.time.LocalDate;
 
+import it.eforhum.buste.GestioneBustePaga;
+import it.eforhum.dipendenti.GestioneDipendenti;
 import it.eforhum.utils.Input;
 
 public class TUI {
     Byte choice;
     boolean isValid;
-
+    GestioneDipendenti gestioneDipendenti = new GestioneDipendenti();
+    GestioneBustePaga gestioneBustePaga = new GestioneBustePaga();
+    
     TUI() {
         System.out.println("Benevenuto nella gestione delle buste paga");
 
@@ -40,10 +44,10 @@ public class TUI {
 
         choice = Input.byteInput("Inserisci\n1 per aggiungere un dipendente\n2 per rimuovere un dipendente\n3 per modificare un dipendente\n4 per calcolare il totale degli stipendi (netto) per un dipendente\n5 calcolo del totale delle trattenute di un singolo dipendente (F24)\n6 Stampare il dipendente con lo stipendio più alto\n0 per tornare al menu principale\n");
         switch (choice) {
-            case 1:
+            case 1 -> {
                 do { 
                     cf = Input.stringInput("Inserisci il codice fiscale del dipendente: ");
-                    // TODO: CHECK CF already exists
+                    isValid = !gestioneDipendenti.verificaSeEsisteIlDipendente(cf);
                 } while (!isValid);
                 nome = Input.stringInput("Inserisci il nome del dipendente: ");
                 cognome = Input.stringInput("Inserisci il cognome del dipendente: ");
@@ -62,24 +66,24 @@ public class TUI {
                 
                 dataAssunzione = Input.dateInput("Inserisci la data di assunzione");
 
-                // TODO: insert employee in DB
+                gestioneDipendenti.aggiungiDipendente(cf, nome, cognome, dataAssunzione, RAL, RAN);
                 System.out.println("Nuovo dipendente aggiunto");
-                break;
-            case 2:
+            }
+            case 2 -> {
                 cf = Input.stringInput("Inserisci il codice fiscale del dipendente da rimuovere: ");
 
-                // TODO: remove employee from DB
+                gestioneDipendenti.rimuoviDipendente(cf);
                 System.out.println("Dipendente rimosso");
-                break;
-            case 3:
+            }
+            case 3 -> {
                 do { 
                     cf = Input.stringInput("Inserisci il codice fiscale del dipendente da modificare: ");
-                    // TODO: CHECK CF if exists
+                    isValid = !gestioneDipendenti.verificaSeEsisteIlDipendente(cf);
                 } while (!isValid);
                 nome = Input.stringInput("Inserisci il nome del dipendente: ");
                 cognome = Input.stringInput("Inserisci il cognome del dipendente: ");
                 
-                Integer annoRAL_RAN;  
+                Integer annoRAL_RAN;
                 do { 
                     RAL = Input.doubleInput("Inserisci la RAL del dipendente: ");
                     RAN = Input.doubleInput("Inserisci la RAN del dipendente: ");
@@ -96,36 +100,36 @@ public class TUI {
                 
                 dataAssunzione = Input.dateInput("Inserisci la data di assunzione");
 
-                // TODO: update employee in DB
+                gestioneDipendenti.aggiornaDipendente(cf, nome, cognome, dataAssunzione, RAL, RAN, annoRAL_RAN);
                 System.out.println("Dipendente modificato");
-                break;
-            case 4:
+            }
+            case 4 -> {
                 do { 
                     cf = Input.stringInput("Inserisci il codice fiscale del dipendente: ");
                     
-                    // TODO: CHECK CF if exists
+                    isValid = gestioneDipendenti.verificaSeEsisteIlDipendente(cf);
                 } while (!isValid);
 
-                // TODO: calculate total net salary for employee
-                break;
-            case 5:
+                double totaleNetto = gestioneBustePaga.calcoloTotaleStipendiPerDipendente(cf);
+                System.out.println("Totale stipendio netto per il dipendente " + cf + ": " + totaleNetto);
+            }
+            case 5 -> {
                 do { 
                     cf = Input.stringInput("Inserisci il codice fiscale del dipendente: ");
 
                     // TODO: CHECK CF if exists
                 } while (!isValid);
-
                 // TODO: calculate total withholdings for employee
-                break;
-            case 6:
-                // TODO: print employee with highest salary
-                break;
-            case 0:
+            }
+            case 6 -> {
+            }
+            case 0 -> {
                 return;
-            default:
-                System.out.println("Scelta non valida, riprova.");
+            }
+            default -> System.out.println("Scelta non valida, riprova.");
         }
-    }
+        // TODO: print employee with highest salary
+            }
 
     public void gestioneBuste() {
         choice = Input.byteInput("Inserisci\n1- Registrazione busta paga\n2- Elenco bonifici e f24");

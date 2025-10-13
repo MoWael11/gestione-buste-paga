@@ -3,16 +3,28 @@ package it.eforhum.buste;
 import java.time.LocalDate;
 
 public class BustaPaga {
+    private int id;
     private int numero;
     private double stipendioLordo;
     private double stipendioNetto;
     private LocalDate dataEmissione;
+    private final String codiceFiscale;
 
-    public BustaPaga(int numero, double stipendioLordo, double stipendioNetto, LocalDate dataEmissione) {
+    public BustaPaga(int id, int numero, double stipendioLordo, double stipendioNetto, LocalDate dataEmissione, String codiceFiscale) {
+        this.id = id;
         this.numero = numero;
         this.stipendioLordo = stipendioLordo;
         this.stipendioNetto = stipendioNetto;
         this.dataEmissione = dataEmissione;
+        this.codiceFiscale = codiceFiscale;
+    }
+
+    public String getCodiceFiscale() {
+        return codiceFiscale;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public int getNumero() {
@@ -49,7 +61,14 @@ public class BustaPaga {
 
     @Override
     public String toString() {
-        return "BustaPaga [numero=" + numero + ", stipendioLordo=" + stipendioLordo + ", stipendioNetto=" + stipendioNetto
-                + ", dataEmissione=" + dataEmissione + "]";
+        StringBuilder sb = new StringBuilder();
+        sb.append("ID: ").append(id).append('\'');
+        sb.append("Numero: ").append(numero).append('\'');
+        sb.append("Stipendio Lordo: ").append(stipendioLordo).append('\'');
+        sb.append("Stipendio Netto: ").append(stipendioNetto).append('\'');
+        sb.append("Data di Emissione: ").append(dataEmissione).append('\'');
+    
+        return sb.toString();
+        
     }
 }
